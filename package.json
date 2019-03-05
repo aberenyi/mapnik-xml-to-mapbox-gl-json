@@ -1,6 +1,6 @@
 {
   "name": "mapnik-xml-to-mapbox-gl-json",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Transform Mapnik XML to Mapbox GL JSON",
   "main": "index.js",
   "license": "MIT",
@@ -8,6 +8,10 @@
     "mapnik-xml-to-mapbox-gl-json": "./bin/mapnik-xml-to-mapbox-gl-json"
   },
   "contributors": [
+    {
+      "name": "Attila Berényi",
+      "email": "aberenyi@gislab.hu"
+    },
     {
       "name": "Oskar Eriksson",
       "email": "oskar.eriksson9@gmail.com",
