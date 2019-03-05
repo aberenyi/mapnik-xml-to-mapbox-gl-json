@@ -9,14 +9,14 @@
   },
   "contributors": [
     {
-      "name" : "Oskar Eriksson",
-      "email" : "oskar.eriksson9@gmail.com",
-      "url" : "www.oskar-eriksson.se"
+      "name": "Oskar Eriksson",
+      "email": "oskar.eriksson9@gmail.com",
+      "url": "www.oskar-eriksson.se"
     },
     {
-      "name" : "Emil Rydkvist",
-      "email" : "rydkvist91@gmail.com",
-      "url" : "www.emilrydkvist.se"
+      "name": "Emil Rydkvist",
+      "email": "rydkvist91@gmail.com",
+      "url": "www.emilrydkvist.se"
     }
   ],
   "repository": {
@@ -24,14 +24,13 @@
     "url": "git://github.com/peroper/mapnik-xml-to-mapbox-gl-json.git"
   },
   "dependencies": {
-    "xml2js": "0.4.4",
     "minimist": "1.1.0",
+    "optimist": "0.6.1",
     "underscore": "1.7.0",
-    "mapbox-gl-style-lint": "7.1.0",
-    "optimist": "0.6.1"
+    "xml2js": "0.4.4"
   },
   "devDependencies": {
-    "mocha": "2.1.0",
+    "mocha": "^6.0.2",
     "should": "5.0.1"
   }
 }
