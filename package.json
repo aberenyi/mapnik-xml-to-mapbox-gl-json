@@ -28,6 +28,7 @@
     "url": "git://github.com/peroper/mapnik-xml-to-mapbox-gl-json.git"
   },
   "dependencies": {
+    "@mapbox/mapbox-gl-style-spec": "^13.6.0",
     "minimist": "1.1.0",
     "optimist": "0.6.1",
     "underscore": "1.7.0",

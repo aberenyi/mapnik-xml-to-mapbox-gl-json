@@ -1,32 +1,32 @@
-var fs = require('fs'),
-    _ = require('underscore'),
-    argv = require('optimist').argv,
-    preprocess = require('./lib/preprocess.js'),
-    postprocess = require('./lib/postprocess.js'),
-    layers = require('./lib/layers.js'),
-    filter = require('./lib/filter.js'),
-    hide = require('./lib/additions/hide.js');
+const _ = require('underscore')
+const argv = require('optimist').argv
+const preprocess = require('./lib/preprocess.js')
+const postprocess = require('./lib/postprocess.js')
+const layers = require('./lib/layers.js')
+const hide = require('./lib/additions/hide.js')
 
+module.exports = generateJSON
 
-module.exports = generateJSON;
+function generateJSON(inputXML, settings, callback)
+{
+  // take care of the filters
+  preprocess(inputXML)
 
-function generateJSON(inputXML, settings, callback) {
+  // this is where all the styles are processed
+  const outputJSON = settings
+  outputJSON["layers"] = layers(inputXML, settings)
 
-    preprocess(inputXML);
+  postprocess(outputJSON)
 
-    var outputJSON = settings;
-    outputJSON["layers"] = layers(inputXML, settings);
+  if (argv.c)
+  {
+    _.each(outputJSON["layers"], function(layer, index, layerList)
+    {
+      layerList[index] = hide(layer)
+    })
+  }
 
-    postprocess(outputJSON);
-
-
-    if (argv.c)
-        _.each(outputJSON["layers"], function(layer, index, layerList) {
-            layerList[index] = hide(layer);
-        });
-
-
-    return callback(null, outputJSON);
+  return callback(null, outputJSON)
 }
 
 

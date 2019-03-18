@@ -1,30 +1,42 @@
 #!/usr/bin/env node
 
-var generateJSON = require('../'),
-    argv = require('optimist').argv,
-    fs = require('fs'),
-    xml2js = require('xml2js'),
-    validate = require('mapbox-gl-style-lint').validate;
+const promisify = require('util').promisify
+const fs = require('fs')
+const readFile = promisify(fs.readFile)
+const writeFile = promisify(fs.writeFile)
+const generateJSON = require('../')
+const server = require('../lib/server')
+const argv = require('optimist').argv
+const xml2js = require('xml2js')
+const validate = require('@mapbox/mapbox-gl-style-spec').validate
 
-if (argv._.length != 3) {
-    return console.error('Usage: mapnik-xml-to-mapbox-gl-json settings.json mapnik.xml style.json');
+if (argv._.length !== 3)
+{
+  return console.error('Usage: mapnik-xml-to-mapbox-gl-json settings.json mapnik.xml style.json')
 }
-settings = require(__dirname + '/../' + argv._[0]);
 
-fs.readFile(argv._[1], function(err, data) {
+const settings = require(__dirname + '/../' + argv._[0])
 
-    var xmlParser = new xml2js.Parser({ explicitRoot: false, mergeAttrs: true, explicitArray: false});
-    xmlParser.parseString(data, function (err, result) {
+run()
 
+async function run()
+{
+  const mapnikXmlData = await readFile(argv._[1]).catch(handleError)
+  const xmlParser = new xml2js.Parser({ explicitRoot: false, mergeAttrs: true, explicitArray: false, async: true })
+  const asyncXmlParser = promisify(xmlParser.parseString)
+  const mapnikJson = await asyncXmlParser(mapnikXmlData).catch(handleError)
+  generateJSON(mapnikJson, settings, (err, mapboxJson) =>
+  {
+    const prettyJson = JSON.stringify(mapboxJson, null, 2)
+    if (err) { return console.error(err) }
+    if (argv.v) { console.log(validate(prettyJson)) }
+    writeFile(argv._[2], prettyJson)
+    if (argv.s) { server(prettyJson) }
+  })
+}
 
-        generateJSON(result, settings, function(err, res) {
-            if (err) return console.error(err);
-            else {
-                if (argv.v)
-                    console.log(validate(JSON.stringify(res)));
-                fs.writeFile(argv._[2], JSON.stringify(res, null, 4));
-            }
-        });
-    });
-});
-
+function handleError(err)
+{
+  console.error(err)
+  process.exit(1)
+}

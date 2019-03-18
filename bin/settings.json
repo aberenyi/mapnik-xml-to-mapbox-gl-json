@@ -1,12 +1,48 @@
 {
-  "version": 7,
-  "constants": {},
-  "sources": {
-    "mapbox": {
+  "version": 8,
+  "sources":
+  {
+    "openmaptiles":
+    {
       "type": "vector",
-      "url": "mapbox://mapbox.mapbox-streets-v6"
+      "url": "https://free.tilehosting.com/data/v3.json?key=R8rAisQ0L6EL1wW8JVYQ"
+    },
+    "dii":
+    {
+      "type": "vector",
+      "tiles": [ "http://localhost:3000/dii/{z}/{x}/{y}.pbf" ]
     }
   },
-  "sprite": "https://www.mapbox.com/mapbox-gl-styles/sprites/sprite",
-  "glyphs": "mapbox://fontstack/{fontstack}/{range}.pbf"
+  "sprite": "https://openmaptiles.github.io/klokantech-basic-gl-style/sprite",
+  "glyphs": "https://free.tilehosting.com/fonts/{fontstack}/{range}.pbf?key=R8rAisQ0L6EL1wW8JVYQ",
+  "layers":
+  [
+    {
+      "id": "background",
+      "type": "background",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "background-color": "hsl(47, 26%, 88%)"
+      }
+    },
+    {
+      "id": "water",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "water",
+      "filter": [
+        "==",
+        "$type",
+        "Polygon"
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "hsl(205, 56%, 73%)"
+      }
+    }
+  ]
 }
